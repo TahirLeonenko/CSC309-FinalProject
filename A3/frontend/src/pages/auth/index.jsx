@@ -3,13 +3,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom'
 import './style.css'
 import { useQueryClient } from '@tanstack/react-query'
 
-// Get the current hostname to determine if we're in production
-const isProduction = window.location.hostname !== 'localhost';
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 
-  (isProduction ? window.location.origin.replace('frontend', 'backend') : 'http://localhost:3000');
-
-console.log('Current environment:', isProduction ? 'production' : 'development');
-console.log('API Base URL:', API_BASE_URL);
+const API_BASE_URL = 'http://localhost:3000'
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
