@@ -47,6 +47,8 @@ const Login = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(credentials),
+        credentials: 'include',
+        mode: 'cors'
       })
 
       console.log('Login response status:', response.status)
@@ -69,6 +71,8 @@ const Login = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${data.token}`,
         },
+        credentials: 'include',
+        mode: 'cors'
       })
       console.log('User data response status:', userResponse.status)
       const userData = await userResponse.json()

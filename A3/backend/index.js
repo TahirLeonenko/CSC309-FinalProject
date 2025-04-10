@@ -34,18 +34,28 @@ const promotionsRouter = require('./routes/promotions')
 
 const cors = require('cors')
 
-// Set up cors to allow requests from both development and production
-app.use(
-  cors({
-    origin: [
-      'http://localhost:5173',
-      'https://frontend-production-dcda.up.railway.app'
-    ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-  })
-)
+// Add CORS middleware before any routes
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://frontend-production-dcda.up.railway.app');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
+// Also keep the cors middleware for additional configuration
+app.use(cors({
+  origin: 'https://frontend-production-dcda.up.railway.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+}));
 
 app.use('/users', usersRouter)
 app.use('/auth', authRouter)
