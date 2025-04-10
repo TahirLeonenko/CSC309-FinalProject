@@ -32,7 +32,7 @@ const Login = () => {
     queryClient.clear()
 
     try {
-      const response = await fetch('http://localhost:3000/auth/tokens', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}auth/tokens`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ const Login = () => {
       alert('Login successful!')
       localStorage.setItem('access_token', data.token)
 
-      const userResponse = await fetch('http://localhost:3000/users/me', {
+      const userResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}users/me`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
