@@ -34,6 +34,7 @@ const Login = () => {
     queryClient.clear()
 
     try {
+      console.log('Attempting login with URL:', `${API_BASE_URL}/auth/tokens`)
       const response = await fetch(`${API_BASE_URL}/auth/tokens`, {
         method: 'POST',
         headers: {
@@ -42,8 +43,9 @@ const Login = () => {
         body: JSON.stringify(credentials),
       })
 
+      console.log('Login response status:', response.status)
       const data = await response.json()
-      console.log(data)
+      console.log('Login response data:', data)
 
       if (!response.ok) {
         // Server returned an error status code (400, 401, etc.)
@@ -54,6 +56,7 @@ const Login = () => {
       alert('Login successful!')
       localStorage.setItem('access_token', data.token)
 
+      console.log('Fetching user data with URL:', `${API_BASE_URL}/users/me`)
       const userResponse = await fetch(`${API_BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
@@ -61,7 +64,9 @@ const Login = () => {
           Authorization: `Bearer ${data.token}`,
         },
       })
+      console.log('User data response status:', userResponse.status)
       const userData = await userResponse.json()
+      console.log('User data:', userData)
       localStorage.setItem('userid', userData.id)
       localStorage.setItem('role', userData.role)
       localStorage.setItem('utorid', userData.utorid)
@@ -82,6 +87,10 @@ const Login = () => {
       // Redirect to dashboard or home page
       //   navigate('/dashboard');
     } catch (err) {
+      console.error('Login error details:', err)
+      console.error('Error message:', err.message)
+      console.error('Error stack:', err.stack)
+      
       if (err.response) {
         // Server responded with an error
         setError(err.response.data.error || 'Login failed. Please try again.')
@@ -90,7 +99,7 @@ const Login = () => {
         setError('Network error. Please check your connection.')
       } else {
         // Something else went wrong
-        setError('An unexpected error occurred.')
+        setError(`An unexpected error occurred: ${err.message}`)
       }
     } finally {
       setIsLoading(false)
