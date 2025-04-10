@@ -6,8 +6,6 @@ import { roleToClearance } from '../../utils/utils'
 function ProtectRoute({ role }) {
   const userRole = localStorage.getItem('role')
 
-  const navigate = useNavigate()
-
   if (roleToClearance[userRole] < roleToClearance[role]) {
     return (
       <Container p={'2rem'}>

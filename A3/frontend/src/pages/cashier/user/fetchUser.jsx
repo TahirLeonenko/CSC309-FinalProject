@@ -1,10 +1,7 @@
-import { useNavigate } from 'react-router-dom';
-
-async function fetchUsers(queryParams, setUsers, setTotalCount, setError, currentPath, navigate) {
+async function fetchUsers(queryParams, setUsers, setError, currentPath, navigate) {
   try {
     if (!queryParams.id) {
       setUsers([]);
-      setTotalCount(0);
       return;
     }
 
@@ -31,14 +28,14 @@ async function fetchUsers(queryParams, setUsers, setTotalCount, setError, curren
           throw new Error('You do not have permission to access user management.');
         case 404:
           setUsers([]);
-          setTotalCount(0);
           return;
+        default:
+          throw new Error(`Unexpected error: ${errorData.error || 'Unknown error occurred'}`);
       }
     }
 
     const user = await res.json();
     setUsers([user]);
-    setTotalCount(1);
   } catch (error) {
     setError(error.message);
   }
@@ -67,6 +64,8 @@ async function createUser(userData, setError, currentPath, navigate) {
           throw new Error('Your session has expired. Please log in again.');
         case 403:
           throw new Error('You do not have permission to create users.');
+        default:
+          throw new Error(`Unexpected error: ${errorData.error || 'Unknown error occurred'}`);
       }
     }
 

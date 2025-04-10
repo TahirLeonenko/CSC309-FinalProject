@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Title, Text, Button, Group, Paper, ThemeIcon, SimpleGrid } from '@mantine/core';
-import { IconUsers, IconChartBar, IconCalendarStats, IconSettings } from '@tabler/icons-react';
+import { IconUsers } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
 function CashierDashboard() {

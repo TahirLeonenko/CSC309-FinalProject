@@ -32,6 +32,8 @@ async function fetchUsers(queryParams, setUsers, setTotalCount, setError, curren
           throw new Error('Your session has expired. Please log in again.');
         case 403:
           throw new Error('You do not have permission to access user management.');
+        default:
+          throw new Error(`Unexpected error: ${errorData.error || 'Unknown error occurred'}`);
       }
     }
     const data = await res.json();

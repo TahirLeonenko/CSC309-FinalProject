@@ -6,15 +6,11 @@ import {
   TextInput,
   NumberInput,
   Button,
-  Group,
-  Loader,
   Notification,
   Paper,
   Title,
   Stack,
-  Text,
   MultiSelect,
-  Divider,
   Select,
 } from '@mantine/core';
 import './styles.css';
