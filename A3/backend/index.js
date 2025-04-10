@@ -34,10 +34,13 @@ const promotionsRouter = require('./routes/promotions')
 
 const cors = require('cors')
 
-// Set up cors to allow requests from your React frontend
+// Set up cors to allow requests from both development and production
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: [
+      'http://localhost:5173',
+      'https://frontend-production-dcda.up.railway.app'
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
