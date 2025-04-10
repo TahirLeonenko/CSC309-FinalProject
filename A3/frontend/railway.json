@@ -1,0 +1,13 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install",
+  "framework": "static",
+  "devCommand": "npm start",
+  "routes": {
+    "/*": {
+      "static": true,
+      "rewrite": "/index.html"
+    }
+  }
+} 
