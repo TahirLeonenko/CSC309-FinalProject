@@ -1,0 +1,133 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  REGULAR
+  CASHIER
+  MANAGER
+  SUPERUSER
+}
+
+enum TransactionType {
+  PURCHASE
+  ADJUSTMENT
+  REDEMPTION
+  TRANSFER
+  EVENT
+}
+
+enum PromotionType {
+  AUTOMATIC
+  ONETIME
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  utorid     String   @unique
+  email      String   @unique
+  name       String
+  password   String?
+  verified   Boolean  @default(false)
+  role       Role     @default(REGULAR)
+  createdAt  DateTime @default(now())
+  lastLogin  DateTime?
+  birthday   String?
+  points     Int      @default(0)
+  suspicious Boolean   @default(false)
+  avatarUrl  String?
+
+  // For activation 
+  resetToken String?
+  expiresAt  DateTime?
+
+  // One-to-many for transactions
+  transactions         Transaction[] @relation("UserTransactions")
+  createdTransactions  Transaction[] @relation("TransactionsCreatedBy")
+  processedTransactions Transaction[] @relation("RedemptionProcessedBy")
+
+  // Many-to-many for events 
+  organizedEvents      Event[]       @relation("EventOrganizers")
+  guestEvents          Event[]       @relation("EventGuests")
+}
+
+model Transaction {
+  id          Int             @id @default(autoincrement())
+  type        TransactionType
+  spent       Float?          // Only applies if type == PURCHASE
+  points      Int             // Net points effect on the user’s balance
+  remark      String?
+  suspicious  Boolean         @default(false)
+  createdAt   DateTime        @default(now())
+
+  // The "main" user who receives or loses points
+  user        User?           @relation("UserTransactions", fields: [userId], references: [id])
+  userId      Int?
+
+  // The user who *created* (logged) this transaction
+  createdBy   User?           @relation("TransactionsCreatedBy", fields: [createdById], references: [id])
+  createdById Int?
+
+  // For redemption transactions, store how many points were redeemed
+  redeemed    Int?
+
+  processedBy User?           @relation("RedemptionProcessedBy", fields: [processedById], references: [id])
+  processedById Int?
+
+  // link to the specific event
+  event       Event?          @relation("EventTransactions", fields: [eventId], references: [id])
+  eventId     Int?
+
+  // For ADJUSTMENT
+  AdjustedTransaction Transaction? @relation("AdjustmentRelation", fields: [AdjustedTransactionId], references: [id])
+  AdjustedTransactionId Int?
+  AdjustedBy Transaction[] @relation("AdjustmentRelation")
+
+
+  // For TRANSFER
+  relatedUserId Int?
+
+  // Many-to-many with promotions (which promotions were applied)
+  promotions Promotion[] @relation("TransactionPromotions")
+}
+
+model Event {
+  id            Int      @id @default(autoincrement())
+  name          String
+  description   String
+  location      String
+  startTime     DateTime
+  endTime       DateTime
+  capacity      Int?
+  pointsRemain  Int      @default(0)
+  pointsAwarded Int      @default(0)
+  published     Boolean  @default(false)
+
+  // Many-to-many with User
+  organizers    User[]   @relation("EventOrganizers")
+  guests        User[]   @relation("EventGuests")
+
+  // For awarding points transactions from this event
+  transactions  Transaction[] @relation("EventTransactions")
+}
+
+model Promotion {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String
+  type        PromotionType
+  startTime   DateTime
+  endTime     DateTime
+  minSpending Float?
+  rate        Float?
+  points      Int?          @default(0)
+
+  // Many-to-many with Transaction
+  transactions Transaction[] @relation("TransactionPromotions")
+}
+
