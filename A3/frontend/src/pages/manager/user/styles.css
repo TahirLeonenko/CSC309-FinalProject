@@ -1,0 +1,16 @@
+/* Container for the entire grid-based table */
+.grid-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Vertical gap between rows */
+}
+
+
+.grid-row.user {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr 2fr 1fr;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}

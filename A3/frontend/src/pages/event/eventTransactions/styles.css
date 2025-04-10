@@ -1,0 +1,70 @@
+.event-transactions-grid-table {
+  display: grid;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.event-transactions-grid-table-container {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+/* For the event details table */
+.event-transactions-grid-table.event-details {
+  grid-template-columns: 
+    minmax(50px, 1fr)    /* ID */
+    minmax(150px, 2fr)   /* Name */
+    minmax(200px, 3fr)   /* Description */
+    minmax(150px, 2fr)   /* Location */
+    minmax(150px, 2fr)   /* Start Time */
+    minmax(150px, 2fr)   /* End Time */
+    minmax(100px, 1fr)   /* Capacity */
+    minmax(100px, 1fr)   /* Points Remaining */
+    minmax(100px, 1fr)   /* Points Awarded */
+    minmax(100px, 1fr)   /* Published */
+    minmax(150px, 2fr);  /* Organizers */
+}
+
+.event-transactions-grid-row {
+  display: contents;
+}
+
+.event-transactions-grid-row.header {
+  background-color: #228be6;
+  color: white;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.event-transactions-grid-row.header .event-transactions-grid-cell {
+  background-color: #228be6;
+  color: white;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.event-transactions-grid-cell {
+  padding: 12px;
+  border-right: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.event-transactions-grid-row:not(.header):hover .event-transactions-grid-cell {
+  background-color: #f9f9f9;
+}
+
+.event-transactions-grid-cell:last-child {
+  border-right: none;
+} 

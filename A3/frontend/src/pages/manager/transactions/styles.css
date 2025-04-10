@@ -1,0 +1,44 @@
+/* Container for the entire grid-based table */
+.grid-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Vertical gap between rows */
+}
+
+
+.grid-row.transaction {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 0.5fr; 
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+
+/* Header row styling */
+.grid-row.header {
+  background-color: #5cb0da!important;
+  color: #fff;
+  font-weight: bold;
+  margin-top: 5%;
+}
+
+/* Even rows styling (if desired) */
+.grid-row.even {
+  background-color: #c4c4c4;
+}
+
+/* Hover effect for all rows */
+.grid-row:hover {
+  background-color: #f1f1f1;
+}
+
+/* Styling for each cell */
+.grid-cell {
+  padding: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
