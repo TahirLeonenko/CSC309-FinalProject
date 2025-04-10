@@ -3,6 +3,8 @@ import { useNavigate, Link, useLocation } from 'react-router-dom'
 import './style.css'
 import { useQueryClient } from '@tanstack/react-query'
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000'
+
 const Login = () => {
   const [credentials, setCredentials] = useState({
     utorid: '',
@@ -32,7 +34,7 @@ const Login = () => {
     queryClient.clear()
 
     try {
-      const response = await fetch('http://localhost:3000/auth/tokens', {
+      const response = await fetch(`${API_BASE_URL}/auth/tokens`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +54,7 @@ const Login = () => {
       alert('Login successful!')
       localStorage.setItem('access_token', data.token)
 
-      const userResponse = await fetch('http://localhost:3000/users/me', {
+      const userResponse = await fetch(`${API_BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
